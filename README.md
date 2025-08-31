@@ -23,8 +23,10 @@ Final project for Asynchronous Server-Side Development course - A complete expen
 ├── models/
 │   ├── User.js           # User schema
 │   ├── Cost.js           # Cost schema
-│   └── Log.js            # Log schema
+│   ├── Log.js            # Log schema
+│   └── Report.js         # 
 ├── routes/
+│   ├── add_user.js       #
 │   ├── users.js          # User CRUD operations
 │   ├── costs.js          # Cost management
 │   ├── reports.js        # Monthly reports with caching
@@ -42,10 +44,10 @@ Final project for Asynchronous Server-Side Development course - A complete expen
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/health` | Health check |
-| POST | `/api/users` | Create user |
 | GET | `/api/users` | List all users |
 | GET | `/api/users/:id` | Get user with total costs |
-| POST | `/api/add` | Add cost entry |
+| POST | `/api/users` | Create user |
+| POST | `/api/add` | Create a user or add a cost |
 | GET | `/api/report?id={id}&year={year}&month={month}` | Monthly report |
 | GET | `/api/about` | Team information |
 | GET | `/api/logs` | Last 200 system logs |
@@ -63,7 +65,10 @@ Copy and run these commands in order to test all functionality:
 - **Expected:** `{"ok":true}`
 
 #### 2. Create User
-- **Method:** `POST https://final-project-server-side-h0n0.onrender.com/api/users`
+- **Method 1:** `POST https://final-project-server-side-h0n0.onrender.com/api/users`
+- **Body:** `{"id":123123,"first_name":"mosh","last_name":"israeli","birthday":"1990-01-01"}`
+- **Expected:** User object with same data
+- **Method 2:** `POST https://final-project-server-side-h0n0.onrender.com/api/add`
 - **Body:** `{"id":123123,"first_name":"mosh","last_name":"israeli","birthday":"1990-01-01"}`
 - **Expected:** User object with same data
 
@@ -122,9 +127,14 @@ $base = "https://final-project-server-side-h0n0.onrender.com"
 # 1. Health check
 Invoke-RestMethod -Method GET -Uri "$base/health"
 
-# 2. Create user
+# 2a. Create user (recommended endpoint)
 Invoke-RestMethod -Method POST -Uri "$base/api/users" -ContentType "application/json" `
   -Body '{"id":123123,"first_name":"mosh","last_name":"israeli","birthday":"1990-01-01"}'
+
+# 2b. Create user (alternative via /api/add)
+# NOTE: Use id/first_name/last_name/birthday ONLY (no "userid") to trigger user creation.
+Invoke-RestMethod -Method POST -Uri "$base/api/add" -ContentType "application/json" `
+  -Body '{"id":555555,"first_name":"alex","last_name":"nuriev","birthday":"1995-05-05"}'
 
 # 3. Add cost
 Invoke-RestMethod -Method POST -Uri "$base/api/add" -ContentType "application/json" `
@@ -154,10 +164,16 @@ BASE="https://final-project-server-side-h0n0.onrender.com"
 # 1. Health check
 curl "$BASE/health"
 
-# 2. Create user
+# 2a. Create user (recommended endpoint)
 curl -X POST "$BASE/api/users" \
   -H "Content-Type: application/json" \
   -d '{"id":123123,"first_name":"mosh","last_name":"israeli","birthday":"1990-01-01"}'
+
+# 2b. Create user (alternative via /api/add)
+# NOTE: Do not include "userid" here; that would add a cost instead.
+curl -X POST "$BASE/api/add" \
+  -H "Content-Type: application/json" \
+  -d '{"id":555555,"first_name":"alex","last_name":"nuriev","birthday":"1995-05-05"}'
 
 # 3. Add cost
 curl -X POST "$BASE/api/add" \
