@@ -25,7 +25,7 @@ app.use(async (req, res, next) => {
       await Log.create({
         method: req.method,
         url: req.originalUrl,
-        status: req.statusCode,
+        status: res.statusCode,
       });
     } catch (err) {
       logger.error(err);

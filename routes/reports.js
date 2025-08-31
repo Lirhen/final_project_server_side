@@ -1,14 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Cost = require('../models/Cost');
-
-const Report = mongoose.model('Report', new mongoose.Schema({
-    userid: Number,
-    year: Number,
-    month: Number,
-    payload: Object
-}, { timestamps: true, collection: 'reports_cache' }));
+const Report = require('../models/Report');
 
 const CATS = ['food','health','housing','sports','education'];
 
