@@ -24,9 +24,9 @@ Final project for Asynchronous Server-Side Development course - A complete expen
 │   ├── User.js           # User schema
 │   ├── Cost.js           # Cost schema
 │   ├── Log.js            # Log schema
-│   └── Report.js         # 
+│   └── Report.js         # Cached monthly reports (Computed Pattern)
 ├── routes/
-│   ├── add_user.js       #
+│   ├── add_user.js       # Optional user creation via /api/add (user-shaped body)
 │   ├── users.js          # User CRUD operations
 │   ├── costs.js          # Cost management
 │   ├── reports.js        # Monthly reports with caching
@@ -41,16 +41,16 @@ Final project for Asynchronous Server-Side Development course - A complete expen
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Health check |
-| GET | `/api/users` | List all users |
+| Method | Endpoint | Description               |
+|--------|----------|---------------------------|
+| GET | `/health` | Health check              |
+| GET | `/api/users` | List all users            |
 | GET | `/api/users/:id` | Get user with total costs |
-| POST | `/api/users` | Create user |
-| POST | `/api/add` | Create a user or add a cost |
-| GET | `/api/report?id={id}&year={year}&month={month}` | Monthly report |
-| GET | `/api/about` | Team information |
-| GET | `/api/logs` | Last 200 system logs |
+| POST | `/api/users` | Create user               |
+| POST | `/api/add` | Create user or Add cost |
+| GET | `/api/report?id={id}&year={year}&month={month}` | Monthly report            |
+| GET | `/api/about` | Team information          |
+| GET | `/api/logs` | Last 200 system logs      |
 
 ## Testing the Live Application
 
@@ -274,7 +274,7 @@ PASS tests/misc.test.js
 ## Development Team
 
 - **Lir Chen**
-- **Alex Nuriev**
+- **Alexander Nuriev**
 
 ---
 
