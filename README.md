@@ -2,264 +2,242 @@
 
 Final project for Asynchronous Server-Side Development course - A complete expense management system with RESTful API.
 
-## Technologies Used
+## Live Application
 
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB Atlas** - Cloud database
-- **Mongoose** - MongoDB ODM
-- **Pino** - Professional logging
-- **Jest & Supertest** - Automated testing
+**Deployed URL:** https://final-project-server-side-h0n0.onrender.com
+
+## Technology Stack
+
+- **Node.js & Express.js** - Server framework
+- **MongoDB Atlas** - Cloud database with Mongoose ODM
+- **Pino** - Professional logging system
+- **Jest & Supertest** - Automated testing with in-memory MongoDB
 - **CORS & dotenv** - Security and environment configuration
 
 ## Project Structure
 
 ```
-├── app.js                 # Main application configuration
-├── server.js             # Server startup file
-├── package.json          # Dependencies and scripts
+├── server.js             # Server startup
+├── app.js                # Main application configuration
+├── package.json          # Dependencies and npm scripts
 ├── models/
-│   ├── Cost.js           # Cost model schema
-│   ├── User.js           # User model schema
-│   └── Log.js            # Log model schema
+│   ├── User.js           # User schema
+│   ├── Cost.js           # Cost schema
+│   └── Log.js            # Log schema
 ├── routes/
-│   ├── costs.js          # Cost management routes
-│   ├── users.js          # User management routes
-│   ├── reports.js        # Monthly reports routes
+│   ├── users.js          # User CRUD operations
+│   ├── costs.js          # Cost management
+│   ├── reports.js        # Monthly reports with caching
 │   ├── about.js          # Team information
 │   └── logs.js           # System logs
 └── tests/
-    ├── costs.test.js     # Cost API tests
     ├── users.test.js     # User API tests
-    ├── reports.test.js   # Reports API tests
-    └── misc.test.js      # General tests
+    ├── costs.test.js     # Cost API tests
+    ├── reports.test.js   # Report API tests
+    └── misc.test.js      # System tests
 ```
-
-## WebStorm Setup & Installation
-
-### Clone and Setup in WebStorm
-
-**For Mac:**
-1. Open WebStorm
-2. File → New → Project from Version Control
-3. Paste repository URL and clone
-4. Open Terminal in WebStorm: `View → Tool Windows → Terminal` or `⌥F12`
-
-**For Windows:**
-1. Open WebStorm
-2. File → New → Project from Version Control
-3. Paste repository URL and clone
-4. Open Terminal in WebStorm: `View → Tool Windows → Terminal` or `Alt+F12`
-
-### Install Dependencies
-
-In WebStorm Terminal:
-```bash
-npm install
-```
-
-## Environment Configuration
-
-Create `.env` file in project root (WebStorm will highlight this file):
-
-```env
-MONGO_URI=mongodb+srv://<USER>:<PASS>@<CLUSTER>.<ID>.mongodb.net/costmanager?retryWrites=true&w=majority
-PORT=3000
-NODE_ENV=development
-```
-
-**Important:** URL-encode special characters in password (e.g., @ → %40)
-
-## Running the Application
-
-### In WebStorm Terminal
-
-**Start Production Mode:**
-```bash
-npm start
-```
-
-**Start Development Mode (with nodemon):**
-```bash
-npm run dev
-```
-
-**Run Tests:**
-```bash
-npm test
-```
-
-### WebStorm Run Configurations
-
-You can also set up run configurations in WebStorm:
-1. **Run → Edit Configurations**
-2. **Add New → Node.js**
-3. Set **JavaScript file**: `server.js`
-4. Set **Environment variables**: Load from `.env`
 
 ## API Endpoints
 
-### Health Check
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Health check |
+| POST | `/api/users` | Create user |
+| GET | `/api/users` | List all users |
+| GET | `/api/users/:id` | Get user with total costs |
+| POST | `/api/add` | Add cost entry |
+| GET | `/api/report?id={id}&year={year}&month={month}` | Monthly report |
+| GET | `/api/about` | Team information |
+| GET | `/api/logs` | Last 200 system logs |
+
+## Testing the Live Application
+
+### Step-by-Step Testing Sequence
+
+Copy and run these commands in order to test all functionality:
+
+#### 1. Health Check
 ```bash
-GET http://localhost:3000/health
+GET https://final-project-server-side-h0n0.onrender.com/health
 ```
+**Expected:** `{"ok":true}`
 
-### User Management
-
-**Create User:**
+#### 2. Create User
 ```bash
-POST http://localhost:3000/api/users
+POST https://final-project-server-side-h0n0.onrender.com/api/users
 Content-Type: application/json
 
 {
   "id": 123123,
-  "first_name": "John",
-  "last_name": "Doe",
+  "first_name": "mosh",
+  "last_name": "israeli", 
   "birthday": "1990-01-01"
 }
 ```
+**Expected:** User object with same data
 
-**Get All Users:**
+#### 3. Add Cost Entry
 ```bash
-GET http://localhost:3000/api/users
-```
-
-**Get Specific User:**
-```bash
-GET http://localhost:3000/api/users/123123
-```
-
-### Cost Management
-
-**Add Cost:**
-```bash
-POST http://localhost:3000/api/add
+POST https://final-project-server-side-h0n0.onrender.com/api/add
 Content-Type: application/json
 
 {
   "userid": 123123,
-  "description": "Groceries",
+  "description": "milk",
   "category": "food",
-  "sum": 50.5
+  "sum": 8
 }
 ```
+**Expected:** Cost object with auto-generated date
+**Valid categories:** food, health, housing, sports, education
 
-**Available categories:** `food`, `health`, `housing`, `sports`, `education`
-
-### Reports
-
-**Get Monthly Report:**
+#### 4. Get Monthly Report
 ```bash
-GET http://localhost:3000/api/report?id=123123&year=2025&month=1
+GET https://final-project-server-side-h0n0.onrender.com/api/report?id=123123&year=2025&month=1
 ```
-
-### System Information
-
-**Get Team Info:**
-```bash
-GET http://localhost:3000/api/about
-```
-
-**Get System Logs:**
-```bash
-GET http://localhost:3000/api/logs
-```
-
-## Testing with WebStorm HTTP Client
-
-WebStorm has a built-in HTTP client. Create a `.http` file:
-
-```http
-### Health Check
-GET http://localhost:3000/health
-
-### Create User
-POST http://localhost:3000/api/users
-Content-Type: application/json
-
-{
-  "id": 123123,
-  "first_name": "John",
-  "last_name": "Doe",
-  "birthday": "1990-01-01"
-}
-
-### Add Cost
-POST http://localhost:3000/api/add
-Content-Type: application/json
-
+**Expected:** JSON with costs grouped by categories:
+```json
 {
   "userid": 123123,
-  "description": "Coffee",
-  "category": "food",
-  "sum": 15.0
+  "year": 2025,
+  "month": 1,
+  "costs": [
+    {"food": [{"sum":8,"description":"milk","day":15}]},
+    {"health": []},
+    {"housing": []},
+    {"sports": []},
+    {"education": []}
+  ]
 }
-
-### Get Monthly Report
-GET http://localhost:3000/api/report?id=123123&year=2025&month=1
 ```
 
-## Testing with PowerShell (Windows)
+#### 5. Get User with Total
+```bash
+GET https://final-project-server-side-h0n0.onrender.com/api/users/123123
+```
+**Expected:** `{"first_name":"mosh","last_name":"israeli","id":123123,"total":8}`
+
+#### 6. List All Users
+```bash
+GET https://final-project-server-side-h0n0.onrender.com/api/users
+```
+**Expected:** Array of all users
+
+#### 7. View Team Information
+```bash
+GET https://final-project-server-side-h0n0.onrender.com/api/about
+```
+**Expected:** 
+```json
+[
+  {"first_name":"lir","last_name":"chen"},
+  {"first_name":"alex","last_name":"nuriev"}
+]
+```
+
+#### 8. View System Logs
+```bash
+GET https://final-project-server-side-h0n0.onrender.com/api/logs
+```
+**Expected:** Array of recent system logs with timestamps
+
+### Testing with PowerShell (Windows)
 
 ```powershell
 # Set base URL
-$base = "http://localhost:3000"
+$base = "https://final-project-server-side-h0n0.onrender.com"
 
-# Create user
+# 1. Health check
+Invoke-RestMethod -Method GET -Uri "$base/health"
+
+# 2. Create user
 Invoke-RestMethod -Method POST -Uri "$base/api/users" -ContentType "application/json" `
-  -Body '{"id":123123,"first_name":"John","last_name":"Doe","birthday":"1990-01-01"}'
+  -Body '{"id":123123,"first_name":"mosh","last_name":"israeli","birthday":"1990-01-01"}'
 
-# Add cost
+# 3. Add cost
 Invoke-RestMethod -Method POST -Uri "$base/api/add" -ContentType "application/json" `
-  -Body '{"userid":123123,"description":"Coffee","category":"food","sum":15.0}'
+  -Body '{"userid":123123,"description":"milk","category":"food","sum":8}'
 
-# Get report
-Invoke-RestMethod -Method GET -Uri "$base/api/report?id=123123&year=2025&month=1"
+# 4. Get monthly report (formatted)
+Invoke-RestMethod -Method GET -Uri "$base/api/report?id=123123&year=2025&month=1" | ConvertTo-Json -Depth 10
+
+# 5. Get user with total
+Invoke-RestMethod -Method GET -Uri "$base/api/users/123123"
+
+# 6. List all users (table format)
+Invoke-RestMethod -Method GET -Uri "$base/api/users" | Format-Table id, first_name, last_name
+
+# 7. Team info
+Invoke-RestMethod -Method GET -Uri "$base/api/about"
+
+# 8. System logs (formatted)
+Invoke-RestMethod -Method GET -Uri "$base/api/logs" | ConvertTo-Json -Depth 5
 ```
 
-## Testing with curl (Mac Terminal)
+### Testing with curl (Mac/Linux)
 
 ```bash
-# Set base URL
-BASE="http://localhost:3000"
+BASE="https://final-project-server-side-h0n0.onrender.com"
 
-# Create user
+# 1. Health check
+curl "$BASE/health"
+
+# 2. Create user
 curl -X POST "$BASE/api/users" \
   -H "Content-Type: application/json" \
-  -d '{"id":123123,"first_name":"John","last_name":"Doe","birthday":"1990-01-01"}'
+  -d '{"id":123123,"first_name":"mosh","last_name":"israeli","birthday":"1990-01-01"}'
 
-# Add cost
+# 3. Add cost
 curl -X POST "$BASE/api/add" \
   -H "Content-Type: application/json" \
-  -d '{"userid":123123,"description":"Coffee","category":"food","sum":15.0}'
+  -d '{"userid":123123,"description":"milk","category":"food","sum":8}'
 
-# Get report
+# 4. Get monthly report
 curl "$BASE/api/report?id=123123&year=2025&month=1"
+
+# 5. Get user with total
+curl "$BASE/api/users/123123"
+
+# 6. List all users
+curl "$BASE/api/users"
+
+# 7. Team info
+curl "$BASE/api/about"
+
+# 8. System logs
+curl "$BASE/api/logs"
 ```
 
-## Deployment on Render
+## Key Features Implemented
 
-The application is deployed on Render at: `https://your-app-name.onrender.com`
+### 1. User Management
+- Create users with validation
+- Retrieve user information with calculated totals
+- List all registered users
 
-### Render Configuration:
-- **Build Command:** `npm install`
-- **Start Command:** `node server.js`
-- **Environment Variables:** Set `MONGO_URI` and `NODE_ENV=production`
+### 2. Cost Tracking
+- Add expenses with category validation
+- Automatic timestamp assignment
+- Prevention of backdated entries
 
-## Key Features
+### 3. Monthly Reports (Computed Pattern)
+- Generate reports grouped by categories
+- Automatic caching for past months
+- Efficient data retrieval and processing
 
-1. **User Management** - Create and manage users with validation
-2. **Cost Tracking** - Add expenses with categories and automatic timestamps
-3. **Monthly Reports** - Grouped cost reports with caching for past months
-4. **Computed Pattern** - Efficient caching of historical reports
-5. **Comprehensive Logging** - All requests logged to database with Pino
-6. **Automated Testing** - Full test suite with in-memory MongoDB
-7. **Input Validation** - Strict validation for all endpoints
-8. **Error Handling** - Proper HTTP status codes and error messages
+### 4. System Logging
+- All HTTP requests logged to database
+- Pino integration for professional logging
+- Last 200 logs accessible via API
 
-## Database Schema
+### 5. Data Validation
+- Strict input validation on all endpoints
+- Proper HTTP status codes
+- Comprehensive error handling
 
-### Users Collection
+## Database Schemas
+
+### User Collection
 ```javascript
 {
   id: Number (required, unique),
@@ -269,52 +247,47 @@ The application is deployed on Render at: `https://your-app-name.onrender.com`
 }
 ```
 
-### Costs Collection
+### Cost Collection
 ```javascript
 {
   description: String (required),
   category: String (required, enum: ['food','health','housing','sports','education']),
   userid: Number (required),
   sum: Number (required),
-  date: Date (default: now)
+  date: Date (default: current timestamp)
 }
 ```
 
-### Logs Collection
+### Log Collection
 ```javascript
 {
   method: String,
   url: String,
   status: Number,
-  timestamp: Date (default: now)
+  timestamp: Date (default: current timestamp)
 }
 ```
 
-## Troubleshooting
+## Automated Testing
 
-### Common Issues in WebStorm:
+The project includes comprehensive Jest tests:
 
-1. **MongoDB Connection Issues:**
-   - Check `.env` file exists and has correct MongoDB URI
-   - Ensure database name is included in URI: `/costmanager?...`
+```bash
+# Run all tests (uses in-memory MongoDB)
+npm test
 
-2. **Port Already in Use:**
-   - Change PORT in `.env` file
-   - Or kill process: `lsof -ti:3000 | xargs kill` (Mac) or `netstat -ano | findstr :3000` (Windows)
-
-3. **Tests Failing:**
-   - Ensure MongoDB Memory Server is installed: `npm install mongodb-memory-server --save-dev`
-   - Run tests with: `npm test`
-
-4. **WebStorm Terminal Issues:**
-   - Restart WebStorm Terminal: `View → Tool Windows → Terminal → Restart`
-   - Check Node.js version: `node --version` (should be ≥16)
+# Expected output:
+PASS tests/users.test.js
+PASS tests/costs.test.js  
+PASS tests/reports.test.js
+PASS tests/misc.test.js
+```
 
 ## Development Team
 
-- Lir Chen
-- Alex Nuriev
+- **Lir Chen**
+- **Alexander Nuriev**
 
-## License
+---
 
-This project is developed for educational purposes as part of the Asynchronous Server-Side Development course.
+**Note:** This application implements the Computed Design Pattern for monthly reports, ensuring efficient caching of historical data and optimal performance for frequently accessed reports.
