@@ -56,46 +56,26 @@ Final project for Asynchronous Server-Side Development course - A complete expen
 
 Copy and run these commands in order to test all functionality:
 
+**Note:** The examples below show the HTTP method and URL for reference. Use the specific PowerShell or curl commands from the sections below.
+
 #### 1. Health Check
-```bash
-GET https://final-project-server-side-h0n0.onrender.com/health
-```
-**Expected:** `{"ok":true}`
+- **Method:** `GET https://final-project-server-side-h0n0.onrender.com/health`
+- **Expected:** `{"ok":true}`
 
 #### 2. Create User
-```bash
-POST https://final-project-server-side-h0n0.onrender.com/api/users
-Content-Type: application/json
-
-{
-  "id": 123123,
-  "first_name": "mosh",
-  "last_name": "israeli", 
-  "birthday": "1990-01-01"
-}
-```
-**Expected:** User object with same data
+- **Method:** `POST https://final-project-server-side-h0n0.onrender.com/api/users`
+- **Body:** `{"id":123123,"first_name":"mosh","last_name":"israeli","birthday":"1990-01-01"}`
+- **Expected:** User object with same data
 
 #### 3. Add Cost Entry
-```bash
-POST https://final-project-server-side-h0n0.onrender.com/api/add
-Content-Type: application/json
-
-{
-  "userid": 123123,
-  "description": "milk",
-  "category": "food",
-  "sum": 8
-}
-```
-**Expected:** Cost object with auto-generated date
-**Valid categories:** food, health, housing, sports, education
+- **Method:** `POST https://final-project-server-side-h0n0.onrender.com/api/add`
+- **Body:** `{"userid":123123,"description":"milk","category":"food","sum":8}`
+- **Expected:** Cost object with auto-generated date
+- **Valid categories:** food, health, housing, sports, education
 
 #### 4. Get Monthly Report
-```bash
-GET https://final-project-server-side-h0n0.onrender.com/api/report?id=123123&year=2025&month=1
-```
-**Expected:** JSON with costs grouped by categories:
+- **Method:** `GET https://final-project-server-side-h0n0.onrender.com/api/report?id=123123&year=2025&month=1`
+- **Expected:** JSON with costs grouped by categories:
 ```json
 {
   "userid": 123123,
@@ -112,22 +92,16 @@ GET https://final-project-server-side-h0n0.onrender.com/api/report?id=123123&yea
 ```
 
 #### 5. Get User with Total
-```bash
-GET https://final-project-server-side-h0n0.onrender.com/api/users/123123
-```
-**Expected:** `{"first_name":"mosh","last_name":"israeli","id":123123,"total":8}`
+- **Method:** `GET https://final-project-server-side-h0n0.onrender.com/api/users/123123`
+- **Expected:** `{"first_name":"mosh","last_name":"israeli","id":123123,"total":8}`
 
 #### 6. List All Users
-```bash
-GET https://final-project-server-side-h0n0.onrender.com/api/users
-```
-**Expected:** Array of all users
+- **Method:** `GET https://final-project-server-side-h0n0.onrender.com/api/users`
+- **Expected:** Array of all users
 
 #### 7. View Team Information
-```bash
-GET https://final-project-server-side-h0n0.onrender.com/api/about
-```
-**Expected:** 
+- **Method:** `GET https://final-project-server-side-h0n0.onrender.com/api/about`
+- **Expected:** 
 ```json
 [
   {"first_name":"lir","last_name":"chen"},
@@ -136,10 +110,8 @@ GET https://final-project-server-side-h0n0.onrender.com/api/about
 ```
 
 #### 8. View System Logs
-```bash
-GET https://final-project-server-side-h0n0.onrender.com/api/logs
-```
-**Expected:** Array of recent system logs with timestamps
+- **Method:** `GET https://final-project-server-side-h0n0.onrender.com/api/logs`
+- **Expected:** Array of recent system logs with timestamps
 
 ### Testing with PowerShell (Windows)
 
@@ -286,7 +258,7 @@ PASS tests/misc.test.js
 ## Development Team
 
 - **Lir Chen**
-- **Alexander Nuriev**
+- **Alex Nuriev**
 
 ---
 
