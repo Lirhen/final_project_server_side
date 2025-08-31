@@ -34,6 +34,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
+app.use('/api/add', require('./routes/add_user'));
 app.use('/api/add', require('./routes/costs'));
 app.use('/api/report', require('./routes/reports'));
 app.use('/api/users', require('./routes/users'));
