@@ -1,3 +1,7 @@
+/**
+ * routes/index.js
+ * Default Express scaffolded route – unused in the assignment API.
+ */
 var express = require('express');
 var router = express.Router();
 

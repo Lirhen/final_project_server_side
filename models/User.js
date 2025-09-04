@@ -1,3 +1,10 @@
+/**
+ * models/User.js
+ * User schema per assignment spec (numeric id, names, birthday as Date).
+ *
+ * Notes
+ * - "id" is a unique Number (not ObjectId) to match endpoint contracts
+ */
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({

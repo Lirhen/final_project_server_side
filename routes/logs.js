@@ -1,3 +1,7 @@
+/**
+ * routes/logs.js
+ * GET /api/logs – returns last 200 request logs, newest first.
+ */
 const express = require('express');
 const router = express.Router();
 const Log = require('../models/Log');

@@ -1,3 +1,8 @@
+/**
+ * tests/test_db.js
+ * Test harness – spins up an in-memory MongoDB for isolated, fast Jest tests.
+ * Provides connect/clear/close helpers used by all test suites.
+ */
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 

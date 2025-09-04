@@ -1,3 +1,11 @@
+/**
+ * models/Cost.js
+ * Cost schema with allowed categories and server-generated date.
+ *
+ * Constraints
+ * - category ∈ ['food','health','housing','sports','education']
+ * - date defaults to Date.now on server; route blocks backdated inserts
+ */
 const mongoose = require('mongoose');
 
 const CostSchema = new mongoose.Schema({

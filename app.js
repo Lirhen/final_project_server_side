@@ -1,3 +1,19 @@
+/**
+ * app.js
+ * Express application configuration for the Cost Manager REST API.
+ *
+ * Responsibilities
+ * - Global middleware: CORS, JSON body parsing, Pino request logging
+ * - Persist every HTTP request/response pair as a Log document
+ * - Mount application routes (users, add, report, about, logs)
+ * - /health endpoint for liveness checks
+ * - 404 handler and centralized error handler (returns JSON)
+ * - Connect to MongoDB (except when NODE_ENV==='test')
+ *
+ * Notes
+ * - Pino is used for both pretty console logs and error reporting
+ * - Mongo connection string read from MONGO_URI (.env)
+ */
 const express = require('express');
 const cors = require('cors');
 const pino = require('pino');
@@ -9,14 +25,17 @@ dotenv.config();
 const app = express();
 const logger = pino({ transport: { target: 'pino-pretty' } });
 
+// Parse CORS + JSON
 app.use(cors());
 app.use(express.json());
 
+// Console log every request (method + url)
 app.use((req, res, next) => {
   logger.info({ method: req.method, url: req.url });
   next();
 });
 
+// Persist a log document for every request when response finishes
 const Log = require('./models/Log');
 
 app.use(async (req, res, next) => {
@@ -34,6 +53,8 @@ app.use(async (req, res, next) => {
   next();
 });
 
+// Route mounting. Note that /api/add handles both user creation and cost creation
+// depending on the JSON body shape (see routes/add_user.js and routes/costs.js)
 app.use('/api/add', require('./routes/add_user'));
 app.use('/api/add', require('./routes/costs'));
 app.use('/api/report', require('./routes/reports'));
@@ -41,12 +62,15 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/about', require('./routes/about'));
 app.use('/api/logs', require('./routes/logs'));
 
+// Health endpoint for uptime monitors and quick checks
 app.get('/health', (req, res) => res.json({ ok: true }));
 
+// Fallback 404 in JSON (kept last to avoid intercepting real routes)
 app.use((req, res) => {
   res.status(404).json({ error: 'not_found', message: 'Endpoint not found' });
 });
 
+// Centralized error handler – always returns JSON
 app.use((err, req, res, next) => {
   logger.error(err);
   res.status(err.status || 500).json({
@@ -55,6 +79,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Connect to MongoDB in non-test environments. Tests use in-memory server.
 if (process.env.NODE_ENV !== 'test') {
   if (!process.env.MONGO_URI) {
     logger.error('MONGO_URI is missing in .env');

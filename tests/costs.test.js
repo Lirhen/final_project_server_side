@@ -1,3 +1,7 @@
+/**
+ * costs.test.js
+ * Covers: POST /api/add (cost creation) and validation paths
+ */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');
 

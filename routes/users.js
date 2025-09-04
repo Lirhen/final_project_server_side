@@ -1,8 +1,21 @@
+/**
+ * routes/users.js
+ * Users CRUD subset used by the assignment.
+ *
+ * Endpoints
+ * - GET /api/users → list all users
+ * - POST /api/users → create user (full validation)
+ * - GET /api/users/:id → user core details + total cost aggregation
+ */
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Cost = require('../models/Cost');
 
+/**
+ * GET /api/users
+ * Returns an array of users (without Mongo internals)
+ */
 router.get('/', async (req, res) => {
     try {
         const users = await User.find({}, { _id: 0, __v: 0 });
@@ -12,6 +25,13 @@ router.get('/', async (req, res) => {
     }
 });
 
+/**
+ * POST /api/users
+ * Validates and creates a new user.
+ * Errors
+ * - 400 missing_fields / id_not_number / invalid_birthday
+ * - 409 id_exists
+ */
 router.post('/', async (req, res) => {
     try {
         const { id, first_name, last_name, birthday } = req.body;
@@ -45,6 +65,12 @@ router.post('/', async (req, res) => {
     }
 });
 
+/**
+ * GET /api/users/:id
+ * Returns { first_name, last_name, id, total }
+ * Implementation
+ * - Aggregates costs by userid to get total
+ */
 router.get('/:id', async (req, res) => {
     try {
         const id = Number(req.params.id);

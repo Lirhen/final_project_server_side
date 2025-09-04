@@ -1,3 +1,7 @@
+/**
+ * reports.test.js
+ * Covers: GET /api/report structure and categories
+ */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');
 

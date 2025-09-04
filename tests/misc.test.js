@@ -1,3 +1,7 @@
+/**
+ * misc.test.js
+ * Covers: /api/about and /api/logs basic shape
+ */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');
 

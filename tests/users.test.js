@@ -1,3 +1,7 @@
+/**
+ * users.test.js
+ * Covers: POST /api/users, GET /api/users, GET /api/users/:id
+ */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');
 

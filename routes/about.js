@@ -1,3 +1,8 @@
+/**
+ * routes/about.js
+ * GET /api/about – returns team members (first_name, last_name only).
+ * Matches the shape used in users collection, as required by the spec.
+ */
 const express = require('express');
 const router = express.Router();
 
