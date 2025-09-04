@@ -1,6 +1,7 @@
 /**
- * misc.test.js
- * Covers: /api/about and /api/logs basic shape
+ * @file tests/misc.test.js
+ * @description Tests for /api/about and /api/logs endpoints.
+ * @module tests/misc.test
  */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');

@@ -1,10 +1,7 @@
 /**
- * models/Report.js
- * Cached monthly reports (Computed Design Pattern).
- *
- * Notes
- * - For past months we compute once and upsert here for quick future reads
- * - Collection name fixed to 'reports_cache' for clarity
+ * @file models/Report.js
+ * @description Cached monthly reports (Computed Pattern).
+ * @module models/Report
  */
 const mongoose = require('mongoose');
 

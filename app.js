@@ -1,18 +1,12 @@
 /**
- * app.js
- * Express application configuration for the Cost Manager REST API.
- *
- * Responsibilities
- * - Global middleware: CORS, JSON body parsing, Pino request logging
- * - Persist every HTTP request/response pair as a Log document
- * - Mount application routes (users, add, report, about, logs)
- * - /health endpoint for liveness checks
- * - 404 handler and centralized error handler (returns JSON)
- * - Connect to MongoDB (except when NODE_ENV==='test')
- *
- * Notes
- * - Pino is used for both pretty console logs and error reporting
- * - Mongo connection string read from MONGO_URI (.env)
+ * @file app.js
+ * @description Express application configuration for the Cost Manager REST API.
+ * @requires express
+ * @requires cors
+ * @requires pino
+ * @requires dotenv
+ * @requires mongoose
+ * @module app
  */
 const express = require('express');
 const cors = require('cors');

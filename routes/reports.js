@@ -1,11 +1,7 @@
 /**
- * routes/reports.js
- * GET /api/report?id={id}&year={year}&month={month}
- *
- * Returns the monthly report grouped by categories for a specific user.
- * Implements the Computed Design Pattern:
- * - For past months: compute once, upsert into Report cache, and return cached payload on next calls
- * - For current/future month: compute on the fly (no cache write) as data can still change
+ * @file routes/reports.js
+ * @description GET /api/report – returns monthly grouped costs, cached for past months.
+ * @module routes/reports
  */
 const express = require('express');
 const router = express.Router();
@@ -14,6 +10,16 @@ const Report = require('../models/Report');
 
 const CATS = ['food','health','housing','sports','education'];
 
+/**
+ * GET /api/report
+ * @route GET /api/report
+ * @group Reports
+ * @param {number} id.query.required - User ID
+ * @param {number} year.query.required
+ * @param {number} month.query.required - 1–12
+ * @returns {Report} 200 - Monthly report grouped by category
+ * @returns {Error} 400 - Invalid/missing params
+ */
 router.get('/', async (req, res) => {
     try {
         const userid = Number(req.query.id);

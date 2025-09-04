@@ -1,6 +1,7 @@
 /**
- * reports.test.js
- * Covers: GET /api/report structure and categories
+ * @file tests/reports.test.js
+ * @description Tests for /api/report endpoint.
+ * @module tests/reports.test
  */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');

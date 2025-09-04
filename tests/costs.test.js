@@ -1,6 +1,7 @@
 /**
- * costs.test.js
- * Covers: POST /api/add (cost creation) and validation paths
+ * @file tests/costs.test.js
+ * @description Tests for /api/add (cost creation & validation).
+ * @module tests/costs.test
  */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');

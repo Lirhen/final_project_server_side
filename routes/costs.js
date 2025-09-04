@@ -1,17 +1,24 @@
 /**
- * routes/costs.js
- * POST /api/add – branch #2: add a cost item when cost-shaped body is sent.
- *
- * Behavior
- * - If body contains { userid, description, category, sum } => create cost
- * - Allowed categories enforced by whitelist
- * - If a future date is provided, it is accepted; past date is rejected
- * (assignment requirement: "server side doesn’t allow adding costs with dates that belong to the past")
+ * @file routes/costs.js
+ * @description POST /api/add – creates cost when body contains cost fields.
+ * @module routes/costs
  */
 const express = require('express');
 const router = express.Router();
 const Cost = require('../models/Cost');
 
+/**
+ * POST /api/add
+ * @route POST /api/add
+ * @group Costs
+ * @param {number} userid.body.required
+ * @param {string} description.body.required
+ * @param {string} category.body.required - Must be one of food|health|housing|sports|education
+ * @param {number} sum.body.required
+ * @param {string} [date.body] - Optional, must not be in the past
+ * @returns {Cost} 200 - Created cost
+ * @returns {Error} 400 - Validation error
+ */
 router.post('/', async (req, res) => {
     try {
         const { description, category, userid, sum, date } = req.body;

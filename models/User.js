@@ -1,9 +1,7 @@
 /**
- * models/User.js
- * User schema per assignment spec (numeric id, names, birthday as Date).
- *
- * Notes
- * - "id" is a unique Number (not ObjectId) to match endpoint contracts
+ * @file models/User.js
+ * @description User schema per assignment spec (numeric id, names, birthday).
+ * @module models/User
  */
 const mongoose = require('mongoose');
 

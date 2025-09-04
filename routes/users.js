@@ -1,11 +1,7 @@
 /**
- * routes/users.js
- * Users CRUD subset used by the assignment.
- *
- * Endpoints
- * - GET /api/users → list all users
- * - POST /api/users → create user (full validation)
- * - GET /api/users/:id → user core details + total cost aggregation
+ * @file routes/users.js
+ * @description Routes for user management.
+ * @module routes/users
  */
 const express = require('express');
 const router = express.Router();
@@ -14,7 +10,9 @@ const Cost = require('../models/Cost');
 
 /**
  * GET /api/users
- * Returns an array of users (without Mongo internals)
+ * @route GET /api/users
+ * @group Users
+ * @returns {Array.<User>} 200 - List of users
  */
 router.get('/', async (req, res) => {
     try {
@@ -27,10 +25,15 @@ router.get('/', async (req, res) => {
 
 /**
  * POST /api/users
- * Validates and creates a new user.
- * Errors
- * - 400 missing_fields / id_not_number / invalid_birthday
- * - 409 id_exists
+ * @route POST /api/users
+ * @group Users
+ * @param {number} id.body.required
+ * @param {string} first_name.body.required
+ * @param {string} last_name.body.required
+ * @param {string} birthday.body.required
+ * @returns {User} 200 - Created user
+ * @returns {Error} 400 - Validation error
+ * @returns {Error} 409 - ID exists
  */
 router.post('/', async (req, res) => {
     try {
@@ -67,9 +70,11 @@ router.post('/', async (req, res) => {
 
 /**
  * GET /api/users/:id
- * Returns { first_name, last_name, id, total }
- * Implementation
- * - Aggregates costs by userid to get total
+ * @route GET /api/users/:id
+ * @group Users
+ * @param {number} id.path.required
+ * @returns {object} 200 - {first_name,last_name,id,total}
+ * @returns {Error} 404 - User not found
  */
 router.get('/:id', async (req, res) => {
     try {

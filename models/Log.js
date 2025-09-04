@@ -1,7 +1,7 @@
 /**
- * models/Log.js
- * Persists minimal request log record for each HTTP request.
- * Saved via middleware in app.js when response finishes.
+ * @file models/Log.js
+ * @description Persists request log record for each HTTP request.
+ * @module models/Log
  */
 const mongoose = require('mongoose');
 

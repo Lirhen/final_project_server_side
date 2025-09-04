@@ -1,21 +1,24 @@
 /**
- * routes/add_user.js
- * POST /api/add – branch #1: create a user when user-shaped body is sent.
- *
- * Behavior
- * - If body contains { id, first_name, last_name, birthday } => create user
- * - Otherwise, pass to next middleware (costs route mounted on same path)
- *
- * Validation
- * - All fields required and non-empty
- * - id must be an integer Number
- * - birthday must parse to a valid Date
- * - Duplicate id returns 409 { error: 'id_exists' }
+ * @file routes/add_user.js
+ * @description POST /api/add – creates user when body contains user fields.
+ * @module routes/add_user
  */
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
+/**
+ * POST /api/add
+ * @route POST /api/add
+ * @group Users
+ * @param {number} id.body.required
+ * @param {string} first_name.body.required
+ * @param {string} last_name.body.required
+ * @param {string} birthday.body.required
+ * @returns {User} 200 - Created user
+ * @returns {Error} 400 - Validation error
+ * @returns {Error} 409 - ID exists
+ */
 router.post('/', async (req, res, next) => {
     const { id, first_name, last_name, birthday } = req.body || {};
 

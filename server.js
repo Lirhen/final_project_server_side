@@ -1,6 +1,7 @@
 /**
- * server.js
- * Entry point – boots the HTTP server and listens on PORT.
+ * @file server.js
+ * @description Entry point: starts HTTP server on PORT.
+ * @requires ./app
  */
 const app = require('./app');
 const PORT = process.env.PORT || 3000;

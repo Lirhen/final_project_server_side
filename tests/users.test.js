@@ -1,6 +1,7 @@
 /**
- * users.test.js
- * Covers: POST /api/users, GET /api/users, GET /api/users/:id
+ * @file tests/users.test.js
+ * @description Tests for /api/users endpoints.
+ * @module tests/users.test
  */
 const request = require('supertest');
 const { connect, clear, close } = require('./test_db');
