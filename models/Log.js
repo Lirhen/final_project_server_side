@@ -1,7 +1,6 @@
-/**
- * @file models/Log.js
- * @description Persists request log record for each HTTP request.
- * @module models/Log
+/*
+ * models/Log.js
+ * Each log entry corresponds to a request made to the API.
  */
 const mongoose = require('mongoose');
 

@@ -1,18 +1,12 @@
-/**
- * @file routes/logs.js
- * @description GET /api/logs – returns last 200 logs.
- * @module routes/logs
+/*
+ * routes/logs.js
+ * Returns the last 200 request logs sorted by newest first.
  */
 const express = require('express');
 const router = express.Router();
 const Log = require('../models/Log');
 
-/**
- * GET /api/logs
- * @route GET /api/logs
- * @group Logs
- * @returns {Array.<Log>} 200 - Logs
- */
+// GET /api/logs
 router.get('/', async (req, res) => {
     try {
         const logs = await Log.find({}, { _id: 0, __v: 0 })

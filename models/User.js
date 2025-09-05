@@ -1,7 +1,10 @@
-/**
- * @file models/User.js
- * @description User schema per assignment spec (numeric id, names, birthday).
- * @module models/User
+/*
+ * models/User.js
+ * Defines schema for users collection:
+ *  - id: unique Number
+ *  - first_name: String
+ *  - last_name: String
+ *  - birthday: Date
  */
 const mongoose = require('mongoose');
 

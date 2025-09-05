@@ -1,12 +1,11 @@
-/**
- * @file app.js
- * @description Express application configuration for the Cost Manager REST API.
- * @requires express
- * @requires cors
- * @requires pino
- * @requires dotenv
- * @requires mongoose
- * @module app
+/*
+ * app.js
+ * Express application configuration:
+ *  - Enables CORS and JSON parsing
+ *  - Logs each request with Pino
+ *  - Persists logs into MongoDB
+ *  - Mounts all routes (users, costs, reports, about, logs)
+ *  - Handles health checks, 404s, and errors
  */
 const express = require('express');
 const cors = require('cors');
@@ -19,17 +18,17 @@ dotenv.config();
 const app = express();
 const logger = pino({ transport: { target: 'pino-pretty' } });
 
-// Parse CORS + JSON
+// Enable CORS and JSON body parsing
 app.use(cors());
 app.use(express.json());
 
-// Console log every request (method + url)
+// Log every request (method + url)
 app.use((req, res, next) => {
   logger.info({ method: req.method, url: req.url });
   next();
 });
 
-// Persist a log document for every request when response finishes
+// Persist a log document when response ends
 const Log = require('./models/Log');
 
 app.use(async (req, res, next) => {
@@ -47,8 +46,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Route mounting. Note that /api/add handles both user creation and cost creation
-// depending on the JSON body shape (see routes/add_user.js and routes/costs.js)
+// Mount routes
 app.use('/api/add', require('./routes/add_user'));
 app.use('/api/add', require('./routes/costs'));
 app.use('/api/report', require('./routes/reports'));
@@ -56,15 +54,15 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/about', require('./routes/about'));
 app.use('/api/logs', require('./routes/logs'));
 
-// Health endpoint for uptime monitors and quick checks
+// Health check endpoint
 app.get('/health', (req, res) => res.json({ ok: true }));
 
-// Fallback 404 in JSON (kept last to avoid intercepting real routes)
+// Handle 404s
 app.use((req, res) => {
   res.status(404).json({ error: 'not_found', message: 'Endpoint not found' });
 });
 
-// Centralized error handler – always returns JSON
+// Centralized error handler
 app.use((err, req, res, next) => {
   logger.error(err);
   res.status(err.status || 500).json({
@@ -73,7 +71,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Connect to MongoDB in non-test environments. Tests use in-memory server.
+// Connect to MongoDB (skip if test)
 if (process.env.NODE_ENV !== 'test') {
   if (!process.env.MONGO_URI) {
     logger.error('MONGO_URI is missing in .env');

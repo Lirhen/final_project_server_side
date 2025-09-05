@@ -1,17 +1,11 @@
-/**
- * @file routes/about.js
- * @description GET /api/about – returns team members (first_name, last_name only).
- * @module routes/about
+/*
+ * routes/about.js
+ * Returns static team information as required by the assignment.
  */
 const express = require('express');
 const router = express.Router();
 
-/**
- * GET /api/about
- * @route GET /api/about
- * @group About
- * @returns {Array.<object>} 200 - Team members
- */
+// GET /api/about
 router.get('/', (req, res) => {
     res.json([
         { first_name: 'lir', last_name: 'chen' },

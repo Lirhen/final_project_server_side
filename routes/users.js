@@ -1,19 +1,16 @@
-/**
- * @file routes/users.js
- * @description Routes for user management.
- * @module routes/users
+/*
+ * routes/users.js
+ * User management endpoints:
+ *  - GET all users
+ *  - POST new user
+ *  - GET user with total costs
  */
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Cost = require('../models/Cost');
 
-/**
- * GET /api/users
- * @route GET /api/users
- * @group Users
- * @returns {Array.<User>} 200 - List of users
- */
+// GET /api/users
 router.get('/', async (req, res) => {
     try {
         const users = await User.find({}, { _id: 0, __v: 0 });
@@ -23,22 +20,12 @@ router.get('/', async (req, res) => {
     }
 });
 
-/**
- * POST /api/users
- * @route POST /api/users
- * @group Users
- * @param {number} id.body.required
- * @param {string} first_name.body.required
- * @param {string} last_name.body.required
- * @param {string} birthday.body.required
- * @returns {User} 200 - Created user
- * @returns {Error} 400 - Validation error
- * @returns {Error} 409 - ID exists
- */
+// POST /api/users
 router.post('/', async (req, res) => {
     try {
         const { id, first_name, last_name, birthday } = req.body;
 
+        // Validate presence
         const fields = [id, first_name, last_name, birthday];
         if (!fields.every(v => v !== undefined && v !== null && String(v).trim() !== '')) {
             return res.status(400).json({ error: 'missing_fields' });
@@ -54,6 +41,7 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'invalid_birthday' });
         }
 
+        // Insert new user
         const user = await User.create({
             id: idNum,
             first_name: String(first_name),
@@ -68,20 +56,14 @@ router.post('/', async (req, res) => {
     }
 });
 
-/**
- * GET /api/users/:id
- * @route GET /api/users/:id
- * @group Users
- * @param {number} id.path.required
- * @returns {object} 200 - {first_name,last_name,id,total}
- * @returns {Error} 404 - User not found
- */
+// GET /api/users/:id
 router.get('/:id', async (req, res) => {
     try {
         const id = Number(req.params.id);
         const user = await User.findOne({ id }, { _id: 0, __v: 0 });
         if (!user) return res.status(404).json({ error: 'user_not_found' });
 
+        // Aggregate total costs
         const sumAgg = await Cost.aggregate([
             { $match: { userid: id } },
             { $group: { _id: null, total: { $sum: '$sum' } } }

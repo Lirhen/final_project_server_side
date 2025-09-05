@@ -1,7 +1,8 @@
-/**
- * @file models/Report.js
- * @description Cached monthly reports (Computed Pattern).
- * @module models/Report
+/*
+ * models/Report.js
+ * Implements the Computed Design Pattern:
+ *  - Past months’ reports are computed once and cached here
+ *  - Queries for those months reuse the cached result
  */
 const mongoose = require('mongoose');
 

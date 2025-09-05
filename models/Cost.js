@@ -1,7 +1,11 @@
-/**
- * @file models/Cost.js
- * @description Cost schema with allowed categories and server-generated date.
- * @module models/Cost
+/*
+ * models/Cost.js
+ * Defines schema for costs collection:
+ *  - description: String
+ *  - category: one of food|health|housing|sports|education
+ *  - userid: Number referencing user.id
+ *  - sum: Number
+ *  - date: defaults to current timestamp
  */
 const mongoose = require('mongoose');
 
